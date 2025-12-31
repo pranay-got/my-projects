@@ -1,0 +1,58 @@
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+public class TextToHandwritten {
+
+    public static void main(String[] args) {
+        try {
+            // Text to convert
+            String text = "This is a Text to Handwritten Notes Converter.\n"
+                        + "This project is developed using Java.\n"
+                        + "It converts typed text into handwritten notes.";
+
+            // Load handwritten font
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("handwritten.ttf"))
+                            .deriveFont(28f);
+
+            // Image size
+            int width = 1000;
+            int height = 700;
+
+            // Create image
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = image.createGraphics();
+
+            // Background
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, width, height);
+
+            // Text settings
+            g.setColor(Color.BLACK);
+            g.setFont(font);
+
+            // Anti-aliasing for smooth handwriting
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                               RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            // Write text line by line
+            int x = 50;
+            int y = 80;
+            for (String line : text.split("\n")) {
+                g.drawString(line, x, y);
+                y += 50;
+            }
+
+            g.dispose();
+
+            // Save image
+            ImageIO.write(image, "png", new File("HandwrittenNotes.png"));
+
+            System.out.println("Handwritten notes generated successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
